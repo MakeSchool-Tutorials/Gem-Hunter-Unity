@@ -1,197 +1,225 @@
 ---
-title: "Level Setup"
-slug: level-setup
+title: "Rotation"
+slug: player-rotation
 ---
-We’re ready to set up our level.
 
-First off, our camera view isn’t in the best spot for a top-down game, so let’s adjust that.
+In order to make the Player face the correct direction when it moves, we’re going to set its Transform to always face the direction of movement, if its velocity is nonzero.
 
-Select Main Camera.  This is the way players will see in our game!  Since you can have more than one camera in a scene, probably the most important feature of Main Camera is the tag MainCamera.  Unity looks for the object with this tag to use as the Camera to use to make a scene’s Game View.
+Open up the Player component in Visual Studios and add the following lines to the end of the Update method:
 
-![](../assets/image_27.png)
+```
+if (rb.velocity.magnitude > 0) {
 
-Set Main Camera’s position to (0,8,-8) and set its rotation to (45,0,0), so that it’s a little more interesting than straight downward.  As you were doing this, you may have noticed that the Scene View provides you with a handy preview of what the Camera sees in the bottom corner.  You can view through a Main Camera also by selecting the Game View at the top at any time.
+transform.forward = direction;
 
-![](../assets/image_28.png)
+}
+```
 
-Now for the level.
+And Freeze the Player’s Rigidbody component’s y rotation.
 
-Create a new Plane (GameObject->3D Object->Plane) and position it at (0,0,0) if it isn’t already.
+![image alt text](../assets/image_64.png)
 
-When you look through the camera, you may notice it’s a little difficult to make out the geometries you’ve got there.
+Run the Scene to check it out!
 
-![](../assets/image_29.png)
+![image alt text](../assets/image_65.gif)
 
-Set the Directional Light’s Light Type from Directional to Point and Bounce Intensity to 0.
+Why does our code make the Player face the right way, and why did we need to freeze y rotation?
 
-![](../assets/image_30.png)
+Our code assign tells the Player’s Transform to be pointed with forward aligned to the direction of motion in the case that the Player’s Rigidbody is moving.  We check whether or not the Rigidbody is moving by seeing if the magnitude of the velocity is greater than zero, because the magnitude will always be a non-negative number, and, unless the magnitude is zero, the velocity is nonzero in some direction.
 
-Much better.
+We froze y rotation to prevent the tumbling that we saw before.  This was happening due to forces applied on collisions with the walls.  If we didn’t do this, the Rigidbody would calculate some rotational velocity and apply that to the Transform.  Then we would appear to spin around while not moving in any direction.
 
-Our plane at (0,0,0) is currently going through our Player, but rather than moving our Plane down, let’s move our Player’s child Cube up a bit.
+#Gems
 
-Select the Player’s Cube and set its Transform to (0,0.5,0).
+Now that our Player and Level are set up, let’s add some collectables!
 
-![](../assets/image_31.png)
+Go back to the Asset Store tab and search "Gem Shader."  Select the Gem Shader package and bring up the import window.
 
-The reason we’ve moved our Cube up rather than our Plane down is because then y = 0 will be the ground, which is easier to remember than y = -0.5.
+![image alt text](../assets/image_66.png)
 
-Add a Cube at position (5,0.5,0) and scale (1,1,10) to make a wall.
+![image alt text](../assets/image_67.png)
 
-![](../assets/image_32.png)
+Unselect the Scripts and Scenes folders, but leave everything else selected, and import.
 
-Now add 3 more such Cubes to make the remaining walls along the other edges of the Plane.  You may find it helpful to use the coordinate widget in the top right of the Scene View to make sure everything is aligned as you’d like it to be.  You can click a second time on the widget to switch between Perspective and Orthographic views.
+![image alt text](../assets/image_68.png)
 
-![](../assets/image_33.gif)
+When the import finishes, move Gem and GemExample into Downloads.
 
-If you Play the game now, you’ll be able to move around in the space, but you’ll go through the walls.
+![image alt text](../assets/image_69.png)
 
-![](../assets/image_34.png)
+Create an Empty Game Object at (0,0,1), name it "Gem" and drag Downloads/GemExample/Prefabs/OldSingleCut onto it in the Hierarchy Panel.
 
-Add a Sphere Collider component to Player and set its center to (0,0.5,0).
+![image alt text](../assets/image_70.png)
 
-![](../assets/image_35.png)
+That Gem is TINY!
 
-Now you shouldn’t be able to go through the walls.  You’ll tumble a little, but we’ll fix that in a little bit.
+Not a problem.  Select the child OldSingleCut and set its scale to (25,25,25).
 
-![](../assets/image_36.gif)
+![image alt text](../assets/image_71.png)
 
-The Cube has done us well so far, but now we want something that clearly faces a direction so we can make our Player face the direction of motion.
+Next, set OldSingleCut’s position to (0, 0.5, 0) and remove its Rigidbody component.
 
-Open up the Asset Store window (Window->Asset Store) and search "Survival Shooter Essentials."
+![image alt text](../assets/image_72.png)
 
-![](../assets/image_37.png)
+We’ve moved it up so that it isn’t clipping through the ground, and we’ve removed the Rigidbody because we don’t want it to have physics applied to it.
 
-Hit "Enter" and click on Survival Shooter.
+Select OldSingleCut’s child object, Mesh, and remove its Mesh Collider component.
 
-![](../assets/image_38.png)
+![image alt text](../assets/image_73.png)
 
-Click on Download to begin the download process.  You may need to create an account or sign in to the Asset Store.
+Now select Gem, give it a Sphere Collider, and check the Is Trigger box.  Is Trigger is a setting that makes the Collider not actually push objects away when it touches them, but still able to detect when collisions, begin, are still happening, and end.  This means we should expect to be able to walk through our Gem.
 
-![](../assets/image_39.png)
+![image alt text](../assets/image_74.png)
 
-![](../assets/image_40.png)
+We’re going to use this Trigger Collider and the Player’s Collider to detect collisions between Players and Gems.
 
-Read and accept the license agreement.
+Create a new script in your Components folder, name it "Gem," and drag it onto Gem in the Hierarchy Panel.
 
-![](../assets/image_41.png)
+![image alt text](../assets/image_75.png)
 
-You may get a warning, since this project involves some Project Settings.  We don’t plan on importing them, but you’ll need to click "Import" to progress to the next step.
+![image alt text](../assets/image_76.png)
 
-![](../assets/image_42.png)
+Open the Gem component in Visual Studios and add the following method to it:
 
-When you do, a window should appear listing all the bits and pieces that come with this package.  Check marks indicate items that will be imported when the "Import" button in the bottom right is clicked.
+```
+void OnTriggerEnter(Collider col) {
 
-![](../assets/image_43.png)
+Debug.Log("Gem Hit!");
 
-Go ahead and click "None" to uncheck everything, and then check the following:
+}
+```
+Run the Scene, and now, whenever you run through Gem, a log should appear in your Console.
 
-* Materials/ZombearMaterial.mat
+![image alt text](../assets/image_77.png)
 
-* Models/Characters/ZomBear.fbx
+The OnTriggerEnter method gets called on every component of a Game Object that has a Collider set as a Trigger (like the one on Gem), whenever that Collider detects a collision with a Collider (Trigger or not).
 
-* Prefabs/ZomBear.prefab
+There are also some similar methods: OnTriggerStay, OnTriggerExit, OnCollisionEnter, OnCollisionStay, OnCollisionExit.  These each do what their names imply -- the Trigger methods only get called if the Collider that was hit is a Trigger, and Collision methods only get called if the Collider that was hit is *not* a Trigger.
 
-* Textures/ZomBearDiffuse.png
+When a Gem gets hit by a Player, and only when hit by a Player, we want that Gem to disappear.
 
-* Textures/ZomBearEmission.png
+That means we should check to see if the object we hit was a Player.  To do this, we can check to see if it has the Player component attached to it.
 
-* Textures/ZomBearNormal.png
+Replace the code inside Gem’s OnTriggerEnter method with the following:
 
-![](../assets/image_44.png)
+```
+if (col.gameObject.GetComponent<Player>()) {
 
-![](../assets/image_45.png)
+Destroy(gameObject);
 
-![](../assets/image_46.png)
+}
+```
+Save the component.
 
-![](../assets/image_47.png)
+Now when you run into the Gem, it should get removed from the Scene!  You should see this both visually in the Game View and in the Hierarchy Panel.
 
-Then click "Import."  When you do, new folders should appear in your Project Panel.
+![image alt text](../assets/image_78.gif)
 
-![](../assets/image_48.png)
+To explain our code a little bit: col.gameObject refers to the Game Object that entered this Collider.  We’re using the GetComponent method to find the Player component.  In the case that we don’t find one, we’ll get null, which behaves similarly to false in a conditional.
 
-For better organization, create a new folder called Downloads and drag in the new folders that were created (Materials, Models, Prefabs, Textures).
+In the case that the Game Object with we’ve collided has a Player component, we remove the Game Object that has this component (Gem) on it from the Scene using the Destroy method.
 
-![image alt text](../assets/image_49.png)
+The variable "gameObject" of any component refers to the Game Object that has this component.  Similarly, transform refers to the transform component of any Game Object that has this component.  
 
-Now we’re going to replace our cosmetic Cube that’s a child of Player with a ZomBear.
+(You can also find the transform by saying gameObject.transform.  As you might guess, this leads to the ability to reference something ridiculous-but-totally-accurate, like gameObject.transform.gameObject.transform.gameObject.transform.transform.gameObject.gameObject etc etc…  While this is *technically* correct… just… don’t do it…  Like, really... why would you ever...?)
 
-Select the Scene tab to switch back to your Scene View from the Asset Store.
+We want more than 1 Gem in our level; however, if we copy-pasted this Gem we have right here and then wanted to make some changes, we’d have to make those changes to all of our copies, which would be nonideal.
 
-![image alt text](../assets/image_50.png)
+Luckily, Unity has a solution: Prefabs.
 
-Select Player in the Hierarchy Panel.  In case you can’t see it in your Scene View, with Player selected, hover over the Scene View and press the "f" key.
+A few of the folders we’ve encountered have been named "Prefab" so what does that mean?  A Prefab is like a blueprint for a Game Object, complete with all the children and components it has.  The really cool thing, though, is that you can update Game Objects that were generated from a Prefab by updating the Prefab definition.
 
-![image alt text](../assets/image_51.gif)
+Create a new folder in Assets called Prefabs
 
-Now Drag a ZomBear Prefab from Downloads/Prefabs/ in your Project Panel onto Player in your Hierarchy.
+![image alt text](../assets/image_79.png)
 
-![image alt text](../assets/image_52.gif)
+Drag Gem from the Hierarchy Panel into this folder in the Project Panel to make it a Prefab.  When you do, the text should turn blue in the Hierarchy Panel to indicate that it’s connected to a Prefab.
 
-Delete the Cube from Player (right-click it and select "Delete"), and your Player should now just be visually represented with the ZomBear!
+![image alt text](../assets/image_80.gif)
 
-![image alt text](../assets/image_53.png)
+Now add some more Gems to your level either by dragging the Prefab you just made from the Project Panel or by copy-pasting the Gem in your Scene already.  Once you’ve turned something into a Prefab, even if you copy-paste it, it’ll still maintain its Prefab connection.
 
-If you try to run the game though, you’ll notice a few issues.  First, the Player appears to glitch to the side on the first few frames.
+![image alt text](../assets/image_81.png)
 
-![image alt text](../assets/image_54.gif)
+A good tip for quickly copying and placing new instances of Gem and still keeping in a grid, by the way, is to select the translation tool from the upper left, select a Gem by clicking on it, copy-paste with Ctrl-C Ctrl-V, and then hold Ctrl while you drag one of the arrows to position it along a grid.  If you hold Ctrl while you drag, the Game Object should snap to integer coordinates.
 
-Second, if you select the Console Panel in the bottom, you’ll notice a few Warnings.
+![image alt text](../assets/image_82.png)
 
-![image alt text](../assets/image_55.png)
+We almost have our game!  We just want to make the game restart once all the Gems are collected.
 
-We’ll fix these issues by removing some components the ZomBear Prefab has that we simply don’t need.
+Add an Empty Game Object and name it Scene.  Create a component named ScenePlay in the Components folder, and add it to Scene.
 
-These are occurring because we didn’t import the scripts that the ZomBear Prefab uses to make it act like a ZomBear, because we don’t want it to.  Even so, the Prefab imported with references to these nonexistent scripts, so we’ll want to remove them.
+![image alt text](../assets/image_83.png)
 
-Select the ZomBear nested under Player and scroll through its components until you see a missing script.  Simply remove each of those components (there should be 3).
+The transform properties of Scene don’t matter; we’re actually just using this Game Object to run a component that will apply some game logic to the scene.  In Unity, any script that runs has to either by attached to an active Game Object or referenced by an active Game Object.  If you’re bothered by this, just think of this Game Object as a nonphysical entity, even though you cannot remove the Transform component.
 
-![image alt text](../assets/image_56.png)
+Open ScenePlay in Visual Studios and add the following code to its Update method:
 
-Additionally, remove the:
+```
+Gem[] gems = GameObject.FindObjectsOfType<Gem>();
 
-* Animator
+if (gems.Length <= 0) {
 
-* Rigidbody
+Debug.Log("WIN");
 
-* Capsule Collider
+}
+```
 
-* Sphere Collider
+Save the component.
 
-* Nav Mesh Agent
+Now when you run the Scene, the Console will log "WIN" each frame after all the Gems are collected.
 
-* Audio Source
+![image alt text](../assets/image_84.png)
 
-That’s… pretty much everything actually, so when you’re done, only the Transform should remain.
+The method GameObject.FindObjectsOfType<T>() searches through every Game Object in the scene and returns an array in no particular order of all components of that type in the scene.  We’re assuming all our Gems are gone when nothing in the scene has a Gem component.
 
-![image alt text](../assets/image_57.png)
+Note that this gives us the components, not the Game Objects.  If we had, say, 2 Gem components on the same Game Object, both of those components would be added to our array.
 
-You may notice when you remove the Animator component that the ZomBear flips 90 degrees.  To fix this, set its rotation to (0,0,90).
+Before adding the logic to make our scene restart, let’s make sure that this "WIN" gets logged only once.  That’s where we want to put the code that resets our level, and we only want that to be called once per win, not infinitely.
 
-![image alt text](../assets/image_58.png)
+Add the following private property to ScenePlay:
 
-Now when you run the Scene, you should get no Warnings in your Console, nor should the Player appear to glitch to the side.
+private bool didEnd;
 
-By the way, in case you want to make the Console visible at all times, you can reposition it by clicking and dragging on the tab.
+And modify the conditional to be:
 
-![image alt text](../assets/image_59.gif)
+```
+if (gems.Length <= 0 && !didEnd) {
 
-If you rearrange the panels in a way that you prefer, you can save that layout by selecting Layout->Save Layout in the top right-hand corner.
+didEnd = true;
 
-![image alt text](../assets/image_60.png)
+Debug.Log("WIN");
 
-![image alt text](../assets/image_61.png)
+}
+```
+This bool serves as a flag.  It’s initialized to false by default, and we only raise it to true when we’ve reached our end condition.
 
-If you’ve saved a layout, you can use it at any time by selecting it from this menu.  This tutorial uses the Default layout, by the way.
+Now when you run the Scene, you should only see one "WIN" log.
 
-We’re also going to clean up ZomBear a little bit.  Expand ZomBear, and you’ll notice it has some children of its own.
+![image alt text](../assets/image_85.png)
 
-![image alt text](../assets/image_62.png)
+Now we’re ready to add the code to reset our Scene.
 
-Zombear (not to be confused with ZomBear) has the mesh that makes the form and color of the model and has an object with a light nested to it.  HitParticles and DeathParticles are Particle Systems that rely on some things we haven’t imported.
+Add the following to the top of the ScenePlay component:
+```
+using UnityEngine.SceneManagement;
+```
+And change the Debug.Log statement to:
+```
+SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+```
+Save the component and run the Scene and WOAH!  What’s happening to our lighting??
 
-Delete HitParticles and DeathParticles.
+![image alt text](../assets/image_86.gif)
 
-![image alt text](../assets/image_63.png)
+This is because our Global Illumination coming from our Skybox needs to be Built.  The reason we see the correct lighting the first time the Scene runs is because, by default, the Global Illumination auto-computes temporarily.
 
-Great!  Not only is this model pretty, but it's also asymmetrical so we know which way its facing.
+Open the Lighting Window (Window->Lighting), uncheck "Auto," and click Build.
+
+ ![image alt text](../assets/image_87.png)
+
+Now when you run the Scene, you should see the same lighting each time!
+
+![image alt text](../assets/image_88.gif)
+
+There you have it!  Enjoy!
