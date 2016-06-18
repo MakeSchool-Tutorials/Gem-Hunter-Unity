@@ -35,7 +35,7 @@ Save your current scene (File->Save Scene As) with the name "Play" and place it 
 
 You can create a folder in the Project Panel by right-clicking and selecting Create->Folder.  You can double-click to view the project’s contents.
 
-![](../assets/assets/image_4.png)
+![](../assets/image_4.png)
 
 We’re going to start by creating our Player.
 
