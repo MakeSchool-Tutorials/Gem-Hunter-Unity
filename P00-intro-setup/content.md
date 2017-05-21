@@ -13,7 +13,7 @@ By the end of this tutorial, you should feel comfortable:
 
 * Making and using Prefabs to reduce needless copy-pasting
 
->[action]
+> [action]
 >Open Unity and create a new 3D project called GemHunter:
 
 ![Create a 3D project](../assets/image_0.png)
@@ -28,35 +28,35 @@ If you do not see this, navigate from the top bar to Edit->Project Settings->Edi
 
 ![Switching to 3D mode in Inspector, if need be](../assets/image_3.png)
 
-This tells Unity to apply certain default settings that make working in 3D easier than it would be otherwise.  Because Unity is a 3D engine, even if you don’t select this option, you can still build a 3D game; you just need to be more cognisant about default settings.
+This tells Unity to apply certain default settings that make working in 3D easier than it would be otherwise. Because Unity is a 3D engine, even if you don’t select this option, you can still build a 3D game; you just need to be more cognisant about default settings.
 
 Our game will only take place in 2D, but we want to use 3D default settings so that we can get used to working with them.
 
->[action]
->Save your current scene (File->Save Scene As) with the name "Play" and place it in a folder called Scenes in your Project Panel.  If you had to change settings from 2D to 3D, before doing this, create a new scene (File->New Scene).
+> [action]
+>Save your current scene (File->Save Scene As) with the name "Play" and place it in a folder called Scenes in your Project Panel. If you had to change settings from 2D to 3D, before doing this, create a new scene (File->New Scene).
 
-You can create a folder in the Project Panel by right-clicking and selecting Create->Folder.  You can double-click to view the project’s contents.
+You can create a folder in the Project Panel by right-clicking and selecting Create->Folder. You can double-click to view the project’s contents.
 
 ![Play Scene](../assets/image_4.png)
 
 We’re going to start by creating our Player.
 
->[action]
+> [action]
 >Create an Empty Game Object (GameObject->Create Empty) in the scene and call it Player (right-click it in the Hierarchy Panel->Rename).
 
 ![The Player in the Hierarchy](../assets/image_5.png)
 
-Unless you’ve moved around in the Scene view, Player should already be at (0,0,0).  You can confirm this by selecting Player and checking its Transform component’s properties in the Inspector.  If they’re not (0,0,0), set them to those values.
+Unless you’ve moved around in the Scene view, Player should already be at (0,0,0). You can confirm this by selecting Player and checking its Transform component’s properties in the Inspector. If they’re not (0,0,0), set them to those values.
 
 ![Reset the Player's position](../assets/image_6.png)
 
->[info]
+> [info]
 >Unless dragged into position in the Scene, Unity creates new objects at the center of Scene view, which is why if you’ve changed where the Scene view is looking, the object may have spawned somewhere else.
 
 So that we can see our Player, we’re going to put a Cube on it.
 
->[action]
->Right-click Player and select 3D Object->Cube from the menu.  A cube should appear in your Scene view, and you should see a Cube nested under your Player in the Hierarchy Panel.
+> [action]
+>Right-click Player and select 3D Object->Cube from the menu. A cube should appear in your Scene view, and you should see a Cube nested under your Player in the Hierarchy Panel.
 
 ![A cube in Player](../assets/image_7.png)
 
@@ -68,21 +68,21 @@ You can view how everything looks in-game through our camera and with lighting b
 
 Stop the scene by pressing the Play arrow again.
 
->[action]
->If you accidentally created a Cube instead by selecting Game Object->3D Object->Cube or clicked the back panel instead of the Player when you made a Cube, it won’t be nested under the Player.  To fix this, drag it onto Player.
+> [action]
+>If you accidentally created a Cube instead by selecting Game Object->3D Object->Cube or clicked the back panel instead of the Player when you made a Cube, it won’t be nested under the Player. To fix this, drag it onto Player.
 
 ![A cube in the wrong spot? Drag to fix it](../assets/image_10.gif)
 
->[action]
+> [action]
 >Select Cube and look in the Inspector.
 
 ![A cube in the Inspector](../assets/image_11.png)
 
-You’ll notice it has a *bunch* more components than Player does!  It has a Transform component, just like Player, but it also has other things.  These are just things that make it a Cube (Mesh Renderer gives it color, Mesh Filter gives it shape, Box Collider makes it bump into/detect stuff).
+You’ll notice it has a *bunch* more components than Player does!  It has a Transform component, just like Player, but it also has other things. These are just things that make it a Cube (Mesh Renderer gives it color, Mesh Filter gives it shape, Box Collider makes it bump into/detect stuff).
 
 We want this Cube to be purely cosmetic (for now!  Don’t worry!  It’ll be prettier than just a Cube in the end!), and not to affect how stuff collides, so we don’t want it to have a Box Collider.
 
->[action]
+> [action]
 >Click the gear icon in the top right of the Cube’s Box Collider component and select "Remove Component."
 
 ![Remove component, gear](../assets/image_12.png)
@@ -93,18 +93,18 @@ Now look at the Hierarchy Panel again.
 
 ![The child cube](../assets/image_14.png)
 
-The way Cube is nested under Player in the Hierarchy Panel indicates that the Cube is the child of Player, and Player is Cube’s parent -- in the graphics sense of the words "child" and “parent.”  If you’re used to Object-Oriented Programming, but not used to graphics, you might hate this, but “child” and “parent” in graphics mean something different...  In graphics, a child moves, rotates, and scales based on how its parent is moved, rotated, and scaled.  Another way to say this: the child’s Transform is affected by the parent’s Transform.
+The way Cube is nested under Player in the Hierarchy Panel indicates that the Cube is the child of Player, and Player is Cube’s parent -- in the graphics sense of the words "child" and `parent.`  If you’re used to Object-Oriented Programming, but not used to graphics, you might hate this, but `child` and `parent` in graphics mean something different... In graphics, a child moves, rotates, and scales based on how its parent is moved, rotated, and scaled. Another way to say this: the child’s Transform is affected by the parent’s Transform.
 
->[action]
->Select Player and set its Transform’s position to (0,0,1).  You should see the Cube appear to move, but if you select the Cube itself, you’ll notice that Cube’s Transform component indicates that it’s still at (0,0,0)!
+> [action]
+>Select Player and set its Transform’s position to (0,0,1). You should see the Cube appear to move, but if you select the Cube itself, you’ll notice that Cube’s Transform component indicates that it’s still at (0,0,0)!
 
 ![The cube's position](../assets/image_15.png)
 
 ![The cube's position, zoomed](../assets/image_16.png)
 
-This is because the Transform gives you local (i.e. with-respect-to-the-object) information rather than global (i.e. with-respect-to-the-world) information.  The Cube’s final position in world space is its parent’s position in world space PLUS its position in local space, so (0,0,1) + (0,0,0) = (0,0,1), and the Cube APPEARS to be at (0,0,1).
+This is because the Transform gives you local (i.e. with-respect-to-the-object) information rather than global (i.e. with-respect-to-the-world) information. The Cube’s final position in world space is its parent’s position in world space PLUS its position in local space, so (0,0,1) + (0,0,0) = (0,0,1), and the Cube APPEARS to be at (0,0,1).
 
 The other Transform properties act in a similar way (rotations add, and scales multiply).
 
->[action]
+> [action]
 >Move Player back to (0,0,0).
