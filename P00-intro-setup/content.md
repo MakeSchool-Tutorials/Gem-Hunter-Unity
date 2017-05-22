@@ -9,6 +9,12 @@ In this tutorial, we’ll be making a gem-collecting game. By the end of this tu
 - Working with Colliders to detect when objects touch
 - Making and using Prefabs to reduce needless copy-pasting
 
+In the end, we'll have created something like this:
+
+![Final product](../assets/image78.gif "Gem Hunter Pro 2000") 
+
+# Start a project
+
 > [action]
 >
 Open Unity and create a new 3D project called GemHunter:

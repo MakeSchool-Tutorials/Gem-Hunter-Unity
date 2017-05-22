@@ -256,6 +256,6 @@ Open the Lighting Window (`Window->Lighting`), uncheck "Auto," and click `Build`
 
 Now when you run the Scene, you should see the same lighting each time!
 
-![image alt text](../assets/image78.gif)
+![Final product](../assets/image78.gif)
 
 There you have it! Enjoy!
