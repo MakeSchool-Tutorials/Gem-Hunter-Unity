@@ -115,18 +115,18 @@ When you do, a window should appear listing all the bits and pieces that come wi
 >
 Go ahead and click "None" to uncheck everything, and then check the following:
 >
+- `Complete-Game/Prefabs/ZomBear.prefab`
 - `Materials/ZombearMaterial.mat`
 - `Models/Characters/ZomBear.fbx`
-- `Prefabs/ZomBear.prefab`
 - `Textures/ZomBearDiffuse.png`
 - `Textures/ZomBearEmission.png`
 - `Textures/ZomBearNormal.png`
 >
-![Assets img 1](../assets/image_44.png)
+![Assets img 1](../assets/image_46.png)
 >
 ![Assets img 2](../assets/image_45.png)
 >
-![Assets img 3](../assets/image_46.png)
+![Assets img 3](../assets/image_44.png)
 >
 ![Assets img 4](../assets/image_47.png)
 >
@@ -134,7 +134,7 @@ Then click "Import."  When you do, new folders should appear in your Project Pan
 >
 ![New folders appear](../assets/image_48.png)
 >
-For better organization, create a new folder called Downloads and drag in the new folders that were created (`Materials`, `Models`, `Prefabs`, `Textures`).
+For better organization, create a new folder called Downloads and drag in the new folders that were created (`Materials`, `Models`, `Completed-Game`, `Textures`). Drag `Prefabs` out of `Completed-Game` and into `Downloads`. Delete `Completed-Game`.
 >
 ![Organization is good](../assets/image_49.png)
 

@@ -11,15 +11,13 @@ In this tutorial, we’ll be making a gem-collecting game. By the end of this tu
 
 In the end, we'll have created something like this:
 
-![Final product](../assets/image78.gif "Gem Hunter Pro 2000") 
+![Final product](../assets/image78.gif "Gem Hunter Pro 2000")
 
 # Start a project
 
 > [action]
 >
-Open Unity and create a new 3D project called GemHunter:
->
-![Create a 3D project](../assets/image_0.png)
+Open Unity and create a new 3D project called GemHunter.
 
 You should see a 3D world with a 3D rotation widget in the top-right corner of the Scene view, and a `Main Camera` and `Directional Light` in your Hierarchy panel.
 

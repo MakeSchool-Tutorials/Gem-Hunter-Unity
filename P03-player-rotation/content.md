@@ -250,7 +250,7 @@ This is because our Global Illumination coming from our Skybox needs to be built
 
 > [action]
 >
-Open the Lighting Window (`Window->Lighting`), uncheck "Auto," and click `Build`.
+Open the Lighting Window (`Window->Lighting->Settings`), uncheck "Auto Generate" and click `Generate Lighting`.
 >
 ![Building Lights](../assets/image_87.png)
 
